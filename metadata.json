@@ -1,0 +1,7 @@
+{
+  "name": "ApexFit - Gym Management System",
+  "description": "Complete, modern, and responsive Gym Management System with member management, membership plans, payment tracking, printable receipts, analytics, and data export.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
+

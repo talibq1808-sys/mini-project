@@ -1,0 +1,1748 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ApexFit - Gym Management System & Member Portal</title>
+  <meta name="description" content="Complete, modern, and responsive Gym Management System and Client-Side Member Portal with real-time membership sync, plans, payments, and analytics." />
+  <meta property="og:title" content="ApexFit - Gym Management System & Member Portal" />
+  <meta property="og:description" content="Complete, modern, and responsive Gym Management System and Client-Side Member Portal." />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <!-- Google Fonts: Plus Jakarta Sans & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Lucide Icons & Chart.js via CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- Application Stylesheet -->
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body class="theme-dark">
+
+  <!-- Top System Mode Bar: Switch Between Client Website and Staff Management Portal -->
+  <aside class="mode-switch-banner" id="modeSwitchBanner">
+    <div class="mode-banner-content">
+      <div class="mode-indicator">
+        <span class="live-dot"></span>
+        <span class="mode-title-text">ApexFit Unified System: Connected Real-Time Database</span>
+      </div>
+      <div class="mode-switch-buttons">
+        <button id="btnSwitchToClient" class="mode-btn" title="View Public Member Website & Online Registration">
+          <i data-lucide="globe"></i>
+          <span>Client Website & Member Portal</span>
+        </button>
+        <button id="btnSwitchToAdmin" class="mode-btn active" title="View Staff Management Dashboard">
+          <i data-lucide="shield-check"></i>
+          <span>Staff Management Dashboard</span>
+          <span class="badge-mini" id="bannerTotalMembers">8 Members</span>
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ========================================================================= -->
+  <!-- 1. CLIENT-FACING WEBSITE (MEMBER PORTAL & PUBLIC GYM WEBSITE)            -->
+  <!-- ========================================================================= -->
+  <div id="clientWebsiteContainer" class="client-website-wrapper hidden">
+    <!-- Client Website Header / Navbar -->
+    <header class="client-navbar">
+      <div class="client-nav-inner">
+        <a href="#hero" class="client-brand">
+          <div class="logo-icon pulse-hover">
+            <i data-lucide="dumbbell"></i>
+          </div>
+          <div class="logo-text">
+            <span class="brand-title">Apex<span class="accent-text">Fit</span></span>
+            <span class="brand-subtitle">ATHLETIC CLUB</span>
+          </div>
+        </a>
+
+        <nav class="client-nav-links">
+          <a href="#client-features" class="client-nav-link">Amenities</a>
+          <a href="#client-plans" class="client-nav-link">Memberships</a>
+          <a href="#client-classes" class="client-nav-link">Class Schedule</a>
+          <a href="#client-portal" class="client-nav-link">Member Portal</a>
+        </nav>
+
+        <div class="client-nav-actions">
+          <button id="clientOpenStatusBtn" class="btn btn-outline btn-sm">
+            <i data-lucide="user-search"></i>
+            <span>Check My Status</span>
+          </button>
+          <a href="#client-plans" class="btn btn-primary btn-sm">
+            <i data-lucide="zap"></i>
+            <span>Join Now</span>
+          </a>
+          <button id="clientGoToAdminBtn" class="btn btn-staff btn-sm" title="Go to Admin Dashboard">
+            <i data-lucide="layout-dashboard"></i>
+            <span>Staff Portal</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="hero" class="client-hero-section">
+      <div class="hero-overlay-gradient"></div>
+      <div class="client-container hero-content">
+        <div class="hero-tag">
+          <span class="tag-pulse"></span>
+          <span>PREMIUM 24/7 ATHLETIC CLUB & WELLNESS</span>
+        </div>
+        <h1 class="hero-heading">
+          FORGE YOUR <span class="highlight-text">PEAK PHYSIQUE</span> WITH ELITE COACHING
+        </h1>
+        <p class="hero-subtext">
+          State-of-the-art strength zones, Olympic lifting platforms, bio-sauna recovery suites, and personalized nutrition tracking. Join online in under 60 seconds with instant digital badge access.
+        </p>
+
+        <div class="hero-cta-group">
+          <a href="#client-plans" class="btn btn-primary btn-lg">
+            <i data-lucide="flame"></i>
+            <span>Explore Plans & Join</span>
+          </a>
+          <button id="heroOpenTrialBtn" class="btn btn-outline btn-lg">
+            <i data-lucide="ticket"></i>
+            <span>Claim Free 1-Day Pass</span>
+          </button>
+        </div>
+
+        <!-- Live Connected Stats from localStorage Database -->
+        <div class="hero-stats-bar">
+          <div class="hero-stat-item">
+            <h3 id="clientStatMembers">0</h3>
+            <p>Active Gym Members</p>
+          </div>
+          <div class="hero-stat-divider"></div>
+          <div class="hero-stat-item">
+            <h3 id="clientStatPlans">4</h3>
+            <p>Tailored Plans</p>
+          </div>
+          <div class="hero-stat-divider"></div>
+          <div class="hero-stat-item">
+            <h3>24 / 7</h3>
+            <p>Member Access</p>
+          </div>
+          <div class="hero-stat-divider"></div>
+          <div class="hero-stat-item">
+            <h3>98.6%</h3>
+            <p>Goal Achievement</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Amenities & Features -->
+    <section id="client-features" class="client-section bg-surface">
+      <div class="client-container">
+        <div class="section-title-wrap text-center">
+          <span class="section-badge">WORLD-CLASS AMENITIES</span>
+          <h2 class="section-title">ENGINEERED FOR HIGH PERFORMANCE</h2>
+          <p class="section-subtitle">Every piece of equipment is calibrated for maximum biomechanical efficiency.</p>
+        </div>
+
+        <div class="amenities-grid">
+          <div class="amenity-card">
+            <div class="amenity-icon orange">
+              <i data-lucide="weight"></i>
+            </div>
+            <h3>Heavy Strength & Powerlifting</h3>
+            <p>Eleiko competition bars, calibrated steel plates, deadlift platforms, and power cages.</p>
+          </div>
+
+          <div class="amenity-card">
+            <div class="amenity-icon lime">
+              <i data-lucide="activity"></i>
+            </div>
+            <h3>Cardio & HIIT Arena</h3>
+            <p>Assault air bikes, Concept2 rowers, SkiErgs, and curved Woodway treadmills for metabolic conditioning.</p>
+          </div>
+
+          <div class="amenity-card">
+            <div class="amenity-icon cyan">
+              <i data-lucide="sparkles"></i>
+            </div>
+            <h3>Bio-Sauna & Cold Plunges</h3>
+            <p>Contrast therapy suites with Finnish dry saunas and 42°F cold plunge pools for rapid muscle recovery.</p>
+          </div>
+
+          <div class="amenity-card">
+            <div class="amenity-icon purple">
+              <i data-lucide="award"></i>
+            </div>
+            <h3>Certified Master Trainers</h3>
+            <p>One-on-one postural analysis, strength coaching, and individualized nutrition blueprints.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Membership Plans (Direct Online Registration) -->
+    <section id="client-plans" class="client-section">
+      <div class="client-container">
+        <div class="section-title-wrap text-center">
+          <span class="section-badge">TRANSPARENT PRICING</span>
+          <h2 class="section-title">CHOOSE YOUR MEMBERSHIP PLAN</h2>
+          <p class="section-subtitle">Select a plan to register online. Instant digital membership pass with no hidden maintenance fees.</p>
+        </div>
+
+        <!-- Dynamic Plans Rendered from System Storage -->
+        <div class="client-plans-grid" id="clientPlansGrid">
+          <!-- Injected via JS -->
+        </div>
+
+        <div class="plans-guarantee-note">
+          <i data-lucide="shield-check"></i>
+          <span>All plans include free biometric body scan, locker room access, and instant digital receipt.</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Member Self-Service Status & Renewal Portal -->
+    <section id="client-portal" class="client-section bg-surface">
+      <div class="client-container">
+        <div class="portal-box-wrapper">
+          <div class="portal-box-header">
+            <div class="portal-badge">
+              <i data-lucide="user-check"></i>
+              <span>MEMBER SELF-SERVICE LOOKUP</span>
+            </div>
+            <h2>Check Your Membership Validity & Pass</h2>
+            <p>Enter your assigned Member ID (e.g. <code>GYM-1001</code>) or registered phone number to verify active pass status, remaining days, and download receipts.</p>
+          </div>
+
+          <div class="portal-search-form">
+            <div class="portal-input-group">
+              <i data-lucide="search" class="portal-search-icon"></i>
+              <input type="text" id="clientLookupInput" placeholder="Enter Member ID (e.g. GYM-1001) or Phone..." />
+              <button id="clientLookupSubmitBtn" class="btn btn-primary">
+                <i data-lucide="arrow-right"></i>
+                <span>Check Status</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Lookup Result Card (Dynamically displayed) -->
+          <div id="clientLookupResult" class="portal-result-card hidden">
+            <!-- Injected via JS -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Class Schedule Timetable -->
+    <section id="client-classes" class="client-section">
+      <div class="client-container">
+        <div class="section-title-wrap text-center">
+          <span class="section-badge">COMMUNITY & SESSIONS</span>
+          <h2 class="section-title">WEEKLY FITNESS CLASS SCHEDULE</h2>
+          <p class="section-subtitle">Included with your active membership pass. Drop in or book ahead.</p>
+        </div>
+
+        <div class="schedule-filter-tabs">
+          <button class="sched-tab active" data-day="all">All Sessions</button>
+          <button class="sched-tab" data-day="Mon">Mon / Wed / Fri</button>
+          <button class="sched-tab" data-day="Tue">Tue / Thu</button>
+          <button class="sched-tab" data-day="Sat">Weekend Intensive</button>
+        </div>
+
+        <div class="classes-grid" id="classesGrid">
+          <!-- Sample interactive classes -->
+          <div class="class-card" data-day="Mon">
+            <div class="class-time-badge">06:30 AM - 07:30 AM</div>
+            <h3>CrossFit Endurance & WOD</h3>
+            <p class="class-coach">Coach: Marcus Stone (CrossFit L3)</p>
+            <div class="class-meta">
+              <span><i data-lucide="flame"></i> High Intensity</span>
+              <span><i data-lucide="users"></i> 16 Slots</span>
+            </div>
+            <button class="btn btn-xs btn-outline book-class-btn" data-class="CrossFit Endurance">Reserve Slot</button>
+          </div>
+
+          <div class="class-card" data-day="Mon">
+            <div class="class-time-badge">05:30 PM - 06:30 PM</div>
+            <h3>Hypertrophy Power Hour</h3>
+            <p class="class-coach">Coach: Elena Rostova (IFBB Pro)</p>
+            <div class="class-meta">
+              <span><i data-lucide="dumbbell"></i> Strength & Size</span>
+              <span><i data-lucide="users"></i> 12 Slots</span>
+            </div>
+            <button class="btn btn-xs btn-outline book-class-btn" data-class="Hypertrophy Power Hour">Reserve Slot</button>
+          </div>
+
+          <div class="class-card" data-day="Tue">
+            <div class="class-time-badge">07:00 AM - 08:00 AM</div>
+            <h3>HIIT Velocity Sprint</h3>
+            <p class="class-coach">Coach: Jordan Lee</p>
+            <div class="class-meta">
+              <span><i data-lucide="activity"></i> Cardio Shred</span>
+              <span><i data-lucide="users"></i> 20 Slots</span>
+            </div>
+            <button class="btn btn-xs btn-outline book-class-btn" data-class="HIIT Velocity Sprint">Reserve Slot</button>
+          </div>
+
+          <div class="class-card" data-day="Tue">
+            <div class="class-time-badge">06:00 PM - 07:00 PM</div>
+            <h3>Olympic Weightlifting Tech</h3>
+            <p class="class-coach">Coach: Sarah Jenkins (USAW)</p>
+            <div class="class-meta">
+              <span><i data-lucide="award"></i> Snatch & Clean/Jerk</span>
+              <span><i data-lucide="users"></i> 8 Slots</span>
+            </div>
+            <button class="btn btn-xs btn-outline book-class-btn" data-class="Olympic Weightlifting">Reserve Slot</button>
+          </div>
+
+          <div class="class-card" data-day="Sat">
+            <div class="class-time-badge">09:00 AM - 10:30 AM</div>
+            <h3>Apex Saturday Beast BootCamp</h3>
+            <p class="class-coach">Coach: Team Apex</p>
+            <div class="class-meta">
+              <span><i data-lucide="zap"></i> Full Body Assault</span>
+              <span><i data-lucide="users"></i> 25 Slots</span>
+            </div>
+            <button class="btn btn-xs btn-outline book-class-btn" data-class="Saturday Beast BootCamp">Reserve Slot</button>
+          </div>
+
+          <div class="class-card" data-day="Sat">
+            <div class="class-time-badge">11:00 AM - 12:00 PM</div>
+            <h3>Mobility & Contrast Recovery</h3>
+            <p class="class-coach">Coach: Dr. Liam Davis</p>
+            <div class="class-meta">
+              <span><i data-lucide="heart"></i> Myofascial & Sauna</span>
+              <span><i data-lucide="users"></i> 14 Slots</span>
+            </div>
+            <button class="btn btn-xs btn-outline book-class-btn" data-class="Mobility & Recovery">Reserve Slot</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Client Footer -->
+    <footer class="client-footer">
+      <div class="client-container footer-content">
+        <div class="footer-col brand-col">
+          <div class="client-brand">
+            <div class="logo-icon">
+              <i data-lucide="dumbbell"></i>
+            </div>
+            <div class="logo-text">
+              <span class="brand-title">Apex<span class="accent-text">Fit</span></span>
+              <span class="brand-subtitle">ATHLETIC CLUB</span>
+            </div>
+          </div>
+          <p class="footer-desc">
+            Empowering athletes and fitness enthusiasts to break physical limits through science-backed training and elite equipment.
+          </p>
+          <div class="footer-gym-info">
+            <p id="footerGymAddressText"><i data-lucide="map-pin"></i> 124 Fitness Blvd, Metro City</p>
+            <p id="footerGymPhoneText"><i data-lucide="phone"></i> +1 (555) 019-8234</p>
+          </div>
+        </div>
+
+        <div class="footer-col">
+          <h4>Quick Navigation</h4>
+          <ul class="footer-links">
+            <li><a href="#hero">Club Overview</a></li>
+            <li><a href="#client-plans">Membership Tiers</a></li>
+            <li><a href="#client-features">Facility Amenities</a></li>
+            <li><a href="#client-classes">Class Schedule</a></li>
+            <li><a href="#client-portal">Member Status Check</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Hours of Operation</h4>
+          <ul class="footer-hours">
+            <li><span>Monday - Friday:</span> <strong>24 Hours</strong></li>
+            <li><span>Saturday:</span> <strong>05:00 AM - 11:00 PM</strong></li>
+            <li><span>Sunday:</span> <strong>06:00 AM - 10:00 PM</strong></li>
+            <li><span>Bio-Sauna & Recovery:</span> <strong>06:00 AM - 10:00 PM</strong></li>
+          </ul>
+        </div>
+
+        <div class="footer-col staff-box-col">
+          <h4>Gym Administration</h4>
+          <p class="text-muted text-sm">Staff members and fitness directors can manage accounts, invoices, and active passes.</p>
+          <button id="footerGoToAdminBtn" class="btn btn-primary btn-block">
+            <i data-lucide="shield-check"></i>
+            <span>Open Staff Dashboard</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="client-container footer-bottom">
+        <p>&copy; 2026 ApexFit Athletic Club. All rights reserved. Real-time Gym Management System integration.</p>
+      </div>
+    </footer>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- 2. STAFF MANAGEMENT DASHBOARD (ORIGINAL COMPREHENSIVE CRM SYSTEM)        -->
+  <!-- ========================================================================= -->
+  <div id="adminAppContainer" class="app-layout">
+    <!-- Sidebar Navigation -->
+    <aside id="sidebar" class="sidebar">
+      <div class="sidebar-header">
+        <div class="brand-logo">
+          <div class="logo-icon">
+            <i data-lucide="dumbbell"></i>
+          </div>
+          <div class="logo-text">
+            <span class="brand-title">Apex<span class="accent-text">Fit</span></span>
+            <span class="brand-subtitle">STAFF DASHBOARD</span>
+          </div>
+        </div>
+        <button id="closeSidebarBtn" class="icon-btn mobile-only" aria-label="Close Sidebar">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+
+      <!-- Quick Switch to Client Website from Sidebar -->
+      <div class="sidebar-client-link-box">
+        <button id="sidebarSwitchToClientBtn" class="btn btn-xs btn-outline btn-block">
+          <i data-lucide="external-link"></i>
+          <span>View Member Website</span>
+        </button>
+      </div>
+
+      <div class="gym-badge-status">
+        <span class="pulse-indicator"></span>
+        <span class="gym-status-text">Floor Occupancy: <strong id="liveActiveCount">0</strong> In Gym</span>
+      </div>
+
+      <nav class="sidebar-nav">
+        <button class="nav-item active" data-view="dashboard">
+          <i data-lucide="layout-dashboard"></i>
+          <span>Dashboard</span>
+        </button>
+        <button class="nav-item" data-view="members">
+          <i data-lucide="users"></i>
+          <span>Members</span>
+          <span class="badge-counter" id="navMembersCount">0</span>
+        </button>
+        <button class="nav-item" data-view="plans">
+          <i data-lucide="layers"></i>
+          <span>Membership Plans</span>
+        </button>
+        <button class="nav-item" data-view="payments">
+          <i data-lucide="credit-card"></i>
+          <span>Payments & Billing</span>
+          <span class="badge-counter pending-badge" id="navPendingCount">0</span>
+        </button>
+        <button class="nav-item" data-view="analytics">
+          <i data-lucide="trending-up"></i>
+          <span>Analytics & Reports</span>
+        </button>
+        <button class="nav-item" data-view="settings">
+          <i data-lucide="settings"></i>
+          <span>Settings & Backup</span>
+        </button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="quick-checkin-card">
+          <div class="checkin-header">
+            <span>Quick Check-In</span>
+            <i data-lucide="zap" class="accent-icon"></i>
+          </div>
+          <div class="checkin-action">
+            <input type="text" id="quickCheckinInput" placeholder="Member ID or Phone..." />
+            <button id="quickCheckinBtn" class="btn btn-sm btn-primary" title="Check in member">
+              <i data-lucide="user-check"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="user-profile">
+          <div class="avatar-circle">AV</div>
+          <div class="user-details">
+            <span class="user-name">Alex Vance</span>
+            <span class="user-role">Gym Director</span>
+          </div>
+          <button id="themeToggleBtn" class="icon-btn theme-switch" aria-label="Toggle Theme" title="Toggle Light/Dark Theme">
+            <i data-lucide="sun" id="themeIconSun"></i>
+            <i data-lucide="moon" id="themeIconMoon" class="hidden"></i>
+          </button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Sidebar Overlay for Mobile -->
+    <div id="sidebarOverlay" class="sidebar-overlay"></div>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+      <!-- Top Navigation Header -->
+      <header class="top-header">
+        <div class="header-left">
+          <button id="mobileMenuBtn" class="icon-btn mobile-only" aria-label="Open Menu">
+            <i data-lucide="menu"></i>
+          </button>
+          <div class="breadcrumb-area">
+            <h1 id="pageTitle" class="page-title">Dashboard</h1>
+            <p id="pageSubtitle" class="page-subtitle">Real-time gym operations, membership statistics, and revenue</p>
+          </div>
+        </div>
+
+        <div class="header-right">
+          <!-- Global Search -->
+          <div class="header-search-box">
+            <i data-lucide="search" class="search-icon"></i>
+            <input type="text" id="globalSearchInput" placeholder="Quick search members, payments..." />
+          </div>
+
+          <!-- Notification Bell -->
+          <div class="dropdown-wrapper">
+            <button id="notificationBtn" class="icon-btn notification-trigger" aria-label="Notifications" title="Alerts & Expirations">
+              <i data-lucide="bell"></i>
+              <span id="notificationBadge" class="notification-dot"></span>
+            </button>
+            <div id="notificationMenu" class="dropdown-menu notification-menu hidden">
+              <div class="dropdown-header">
+                <h4>System Alerts & Expirations</h4>
+                <button id="markAlertsReadBtn" class="text-btn">Clear All</button>
+              </div>
+              <div id="notificationList" class="notification-items">
+                <!-- Notifications injected via JS -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick Action Buttons -->
+          <div class="header-actions">
+            <button id="headerAddMemberBtn" class="btn btn-primary">
+              <i data-lucide="user-plus"></i>
+              <span class="btn-text">Add Member</span>
+            </button>
+            <button id="headerAddPaymentBtn" class="btn btn-secondary">
+              <i data-lucide="circle-dollar-sign"></i>
+              <span class="btn-text">Record Payment</span>
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <!-- Alert Banner for Urgent Expirations -->
+      <div id="urgentAlertBanner" class="alert-banner hidden">
+        <div class="alert-content">
+          <i data-lucide="alert-triangle" class="alert-icon"></i>
+          <span id="urgentAlertText">Notice: Some memberships are expiring soon or have overdue balances.</span>
+        </div>
+        <div class="alert-actions">
+          <button id="viewExpiringActionBtn" class="btn btn-xs btn-outline">Review Members</button>
+          <button id="dismissAlertBtn" class="icon-btn icon-btn-sm" aria-label="Dismiss alert">
+            <i data-lucide="x"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- VIEW 1: DASHBOARD -->
+      <section id="view-dashboard" class="content-view active">
+        <!-- Metric Summary Cards -->
+        <div class="metrics-grid">
+          <!-- Total Members -->
+          <div class="metric-card">
+            <div class="metric-card-top">
+              <span class="metric-label">Total Members</span>
+              <div class="metric-icon-box orange">
+                <i data-lucide="users"></i>
+              </div>
+            </div>
+            <div class="metric-value" id="statTotalMembers">0</div>
+            <div class="metric-footer">
+              <span class="trend-indicator positive">
+                <i data-lucide="trending-up"></i>
+                <span id="statActiveRatio">0%</span>
+              </span>
+              <span class="metric-subtext">Active enrollment rate</span>
+            </div>
+          </div>
+
+          <!-- Active Memberships -->
+          <div class="metric-card">
+            <div class="metric-card-top">
+              <span class="metric-label">Active Members</span>
+              <div class="metric-icon-box green">
+                <i data-lucide="check-circle-2"></i>
+              </div>
+            </div>
+            <div class="metric-value" id="statActiveMembers">0</div>
+            <div class="metric-footer">
+              <span class="status-indicator-dot dot-active"></span>
+              <span class="metric-subtext"><span id="statActiveSubtext">0</span> valid passes</span>
+            </div>
+          </div>
+
+          <!-- Expired / Expiring Soon -->
+          <div class="metric-card">
+            <div class="metric-card-top">
+              <span class="metric-label">Expired / Expiring</span>
+              <div class="metric-icon-box red">
+                <i data-lucide="clock"></i>
+              </div>
+            </div>
+            <div class="metric-value" id="statExpiredMembers">0</div>
+            <div class="metric-footer">
+              <span class="trend-indicator negative">
+                <i data-lucide="alert-circle"></i>
+                <span id="statExpiringSoonCount">0</span> expiring soon
+              </span>
+              <span class="metric-subtext">Needs renewal</span>
+            </div>
+          </div>
+
+          <!-- Total Revenue -->
+          <div class="metric-card">
+            <div class="metric-card-top">
+              <span class="metric-label">Total Collected Revenue</span>
+              <div class="metric-icon-box purple">
+                <i data-lucide="wallet"></i>
+              </div>
+            </div>
+            <div class="metric-value" id="statTotalRevenue">$0</div>
+            <div class="metric-footer">
+              <span class="trend-indicator positive">
+                <i data-lucide="arrow-up-right"></i>
+                <span id="statTotalPaymentsCount">0</span> receipts
+              </span>
+              <span class="metric-subtext">Lifetime collected</span>
+            </div>
+          </div>
+
+          <!-- Pending Payments -->
+          <div class="metric-card">
+            <div class="metric-card-top">
+              <span class="metric-label">Pending / Overdue</span>
+              <div class="metric-icon-box amber">
+                <i data-lucide="hourglass"></i>
+              </div>
+            </div>
+            <div class="metric-value" id="statPendingRevenue">$0</div>
+            <div class="metric-footer">
+              <span class="status-indicator-dot dot-pending"></span>
+              <span class="metric-subtext"><span id="statPendingInvoicesCount">0</span> pending invoices</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Charts Row -->
+        <div class="charts-grid">
+          <div class="chart-card">
+            <div class="card-header-flex">
+              <div>
+                <h3 class="card-title">Revenue & Billing Trend</h3>
+                <p class="card-subtitle">Monthly collected income and cash flow</p>
+              </div>
+              <div class="card-action-tag">Last 6 Months</div>
+            </div>
+            <div class="chart-container">
+              <canvas id="revenueChart"></canvas>
+            </div>
+          </div>
+
+          <div class="chart-card">
+            <div class="card-header-flex">
+              <div>
+                <h3 class="card-title">Plan Distribution</h3>
+                <p class="card-subtitle">Active memberships by plan type</p>
+              </div>
+              <div class="card-action-tag">All Plans</div>
+            </div>
+            <div class="chart-container donut-container">
+              <canvas id="plansPieChart"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- Two Column Tables: Recent Registrations & Upcoming Expirations -->
+        <div class="dashboard-tables-grid">
+          <!-- Recent Members -->
+          <div class="dashboard-panel">
+            <div class="panel-header">
+              <div class="panel-title-group">
+                <i data-lucide="user-check" class="panel-icon"></i>
+                <h3>Recent Member Registrations</h3>
+              </div>
+              <button class="link-btn" data-view="members">View All Members &rarr;</button>
+            </div>
+            <div class="table-responsive">
+              <table class="data-table compact-table">
+                <thead>
+                  <tr>
+                    <th>Member</th>
+                    <th>Plan</th>
+                    <th>Joined</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="dashboardRecentMembersBody">
+                  <!-- Injected via JS -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Upcoming Expirations -->
+          <div class="dashboard-panel">
+            <div class="panel-header">
+              <div class="panel-title-group">
+                <i data-lucide="calendar-off" class="panel-icon amber-icon"></i>
+                <h3>Upcoming Expirations (Next 14 Days)</h3>
+              </div>
+              <button class="link-btn" id="filterExpiringQuickBtn">Show Filtered &rarr;</button>
+            </div>
+            <div class="table-responsive">
+              <table class="data-table compact-table">
+                <thead>
+                  <tr>
+                    <th>Member</th>
+                    <th>Plan</th>
+                    <th>Expires</th>
+                    <th>Days Left</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="dashboardExpiringMembersBody">
+                  <!-- Injected via JS -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- VIEW 2: MEMBERS MANAGEMENT -->
+      <section id="view-members" class="content-view">
+        <div class="view-header-bar">
+          <div class="view-intro">
+            <h2>Members Management</h2>
+            <p>View, search, filter, register, and update gym members</p>
+          </div>
+          <div class="view-actions-group">
+            <button id="exportMembersCsvBtn" class="btn btn-secondary">
+              <i data-lucide="download"></i>
+              <span>Export CSV</span>
+            </button>
+            <button id="openAddMemberModalBtn" class="btn btn-primary">
+              <i data-lucide="plus"></i>
+              <span>New Member</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Filter & Search Toolbar -->
+        <div class="filter-toolbar">
+          <div class="search-input-wrapper">
+            <i data-lucide="search"></i>
+            <input type="text" id="memberSearchInput" placeholder="Search by name, phone, email, or ID..." />
+            <button id="clearMemberSearchBtn" class="clear-btn hidden">&times;</button>
+          </div>
+
+          <div class="filters-row">
+            <div class="filter-group">
+              <label for="memberStatusFilter">Status:</label>
+              <select id="memberStatusFilter" class="form-select">
+                <option value="all">All Statuses</option>
+                <option value="Active">Active</option>
+                <option value="Expiring Soon">Expiring Soon (≤ 7 days)</option>
+                <option value="Expired">Expired</option>
+                <option value="Inactive">Inactive</option>
+              </select>
+            </div>
+
+            <div class="filter-group">
+              <label for="memberPlanFilter">Plan:</label>
+              <select id="memberPlanFilter" class="form-select">
+                <option value="all">All Plans</option>
+                <!-- Populated dynamically -->
+              </select>
+            </div>
+
+            <div class="filter-group">
+              <label for="memberGenderFilter">Gender:</label>
+              <select id="memberGenderFilter" class="form-select">
+                <option value="all">All Genders</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+
+            <button id="resetMemberFiltersBtn" class="btn btn-sm btn-ghost" title="Reset all filters">
+              <i data-lucide="rotate-ccw"></i>
+              <span>Reset</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Members Table -->
+        <div class="table-container">
+          <div class="table-info-bar">
+            <span id="memberCountSummary">Showing 0 members</span>
+          </div>
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th class="sortable" data-sort="id">Member ID <i data-lucide="arrow-up-down" class="sort-icon"></i></th>
+                  <th class="sortable" data-sort="name">Full Name <i data-lucide="arrow-up-down" class="sort-icon"></i></th>
+                  <th>Contact Info</th>
+                  <th>Gender / Age</th>
+                  <th class="sortable" data-sort="plan">Plan</th>
+                  <th class="sortable" data-sort="expiry">Expiry Date <i data-lucide="arrow-up-down" class="sort-icon"></i></th>
+                  <th class="sortable" data-sort="status">Status <i data-lucide="arrow-up-down" class="sort-icon"></i></th>
+                  <th class="text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="membersTableBody">
+                <!-- Injected via JS -->
+              </tbody>
+            </table>
+          </div>
+          <div id="membersEmptyState" class="empty-state hidden">
+            <i data-lucide="users-round" class="empty-icon"></i>
+            <h3>No Members Found</h3>
+            <p>Try adjusting your search terms or filters, or add a new gym member.</p>
+            <button class="btn btn-primary btn-sm" id="emptyStateAddMemberBtn">Add Member</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- VIEW 3: MEMBERSHIP PLANS -->
+      <section id="view-plans" class="content-view">
+        <div class="view-header-bar">
+          <div class="view-intro">
+            <h2>Membership Plans</h2>
+            <p>Configure subscription tiers, pricing, duration, and member assignments</p>
+          </div>
+          <div class="view-actions-group">
+            <button id="openAddPlanModalBtn" class="btn btn-primary">
+              <i data-lucide="plus"></i>
+              <span>Create New Plan</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Plans Grid -->
+        <div class="plans-grid" id="plansContainer">
+          <!-- Injected via JS -->
+        </div>
+      </section>
+
+      <!-- VIEW 4: PAYMENTS MANAGEMENT -->
+      <section id="view-payments" class="content-view">
+        <div class="view-header-bar">
+          <div class="view-intro">
+            <h2>Payments & Invoicing</h2>
+            <p>Track cash flow, record dues, generate receipts, and manage billing</p>
+          </div>
+          <div class="view-actions-group">
+            <button id="exportPaymentsCsvBtn" class="btn btn-secondary">
+              <i data-lucide="download"></i>
+              <span>Export CSV</span>
+            </button>
+            <button id="openAddPaymentModalBtn" class="btn btn-primary">
+              <i data-lucide="plus"></i>
+              <span>Record Payment</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Payment KPI Highlights -->
+        <div class="payments-stats-row">
+          <div class="stat-pill">
+            <span class="stat-pill-label">Total Collected</span>
+            <strong class="stat-pill-val text-green" id="kpiTotalCollected">$0.00</strong>
+          </div>
+          <div class="stat-pill">
+            <span class="stat-pill-label">Pending / Unpaid</span>
+            <strong class="stat-pill-val text-amber" id="kpiTotalPending">$0.00</strong>
+          </div>
+          <div class="stat-pill">
+            <span class="stat-pill-label">Overdue Invoices</span>
+            <strong class="stat-pill-val text-red" id="kpiTotalOverdue">0</strong>
+          </div>
+          <div class="stat-pill">
+            <span class="stat-pill-label">Total Transactions</span>
+            <strong class="stat-pill-val" id="kpiTotalTransactions">0</strong>
+          </div>
+        </div>
+
+        <!-- Payment Filters Toolbar -->
+        <div class="filter-toolbar">
+          <div class="search-input-wrapper">
+            <i data-lucide="search"></i>
+            <input type="text" id="paymentSearchInput" placeholder="Search by payment ID, member name, plan..." />
+            <button id="clearPaymentSearchBtn" class="clear-btn hidden">&times;</button>
+          </div>
+
+          <div class="filters-row">
+            <div class="filter-group">
+              <label for="paymentStatusFilter">Status:</label>
+              <select id="paymentStatusFilter" class="form-select">
+                <option value="all">All Statuses</option>
+                <option value="Paid">Paid</option>
+                <option value="Pending">Pending</option>
+                <option value="Overdue">Overdue</option>
+              </select>
+            </div>
+
+            <div class="filter-group">
+              <label for="paymentMethodFilter">Method:</label>
+              <select id="paymentMethodFilter" class="form-select">
+                <option value="all">All Methods</option>
+                <option value="Cash">Cash</option>
+                <option value="UPI">UPI / Online</option>
+                <option value="Card">Card</option>
+                <option value="Bank Transfer">Bank Transfer</option>
+              </select>
+            </div>
+
+            <button id="resetPaymentFiltersBtn" class="btn btn-sm btn-ghost">
+              <i data-lucide="rotate-ccw"></i>
+              <span>Reset</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Payments Table -->
+        <div class="table-container">
+          <div class="table-info-bar">
+            <span id="paymentCountSummary">Showing 0 payments</span>
+          </div>
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Receipt / ID</th>
+                  <th>Member Name</th>
+                  <th>Plan</th>
+                  <th>Amount</th>
+                  <th>Payment Date</th>
+                  <th>Method</th>
+                  <th>Status</th>
+                  <th class="text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="paymentsTableBody">
+                <!-- Injected via JS -->
+              </tbody>
+            </table>
+          </div>
+          <div id="paymentsEmptyState" class="empty-state hidden">
+            <i data-lucide="receipt" class="empty-icon"></i>
+            <h3>No Payment Records Found</h3>
+            <p>Try clearing filters or recording a new membership payment.</p>
+            <button class="btn btn-primary btn-sm" id="emptyStateAddPaymentBtn">Record Payment</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- VIEW 5: ANALYTICS & REPORTS -->
+      <section id="view-analytics" class="content-view">
+        <div class="view-header-bar">
+          <div class="view-intro">
+            <h2>Analytics & Insights</h2>
+            <p>Financial breakdowns, membership dynamics, and demographic trends</p>
+          </div>
+          <div class="view-actions-group">
+            <button id="printReportBtn" class="btn btn-secondary">
+              <i data-lucide="printer"></i>
+              <span>Print Executive Summary</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="analytics-grid">
+          <div class="chart-card full-width-card">
+            <div class="card-header-flex">
+              <div>
+                <h3 class="card-title">Monthly Collections & Dues</h3>
+                <p class="card-subtitle">Paid revenue vs. outstanding pending payments</p>
+              </div>
+            </div>
+            <div class="chart-container large-chart">
+              <canvas id="analyticsBarChart"></canvas>
+            </div>
+          </div>
+
+          <div class="chart-card">
+            <div class="card-header-flex">
+              <div>
+                <h3 class="card-title">Payment Method Share</h3>
+                <p class="card-subtitle">Transaction volume by payment channel</p>
+              </div>
+            </div>
+            <div class="chart-container donut-container">
+              <canvas id="paymentMethodChart"></canvas>
+            </div>
+          </div>
+
+          <div class="chart-card">
+            <div class="card-header-flex">
+              <div>
+                <h3 class="card-title">Member Demographics</h3>
+                <p class="card-subtitle">Gender and demographic distribution</p>
+              </div>
+            </div>
+            <div class="chart-container donut-container">
+              <canvas id="demographicsChart"></canvas>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- VIEW 6: SETTINGS & BACKUP -->
+      <section id="view-settings" class="content-view">
+        <div class="view-header-bar">
+          <div class="view-intro">
+            <h2>Gym Settings & Data Management</h2>
+            <p>Configure gym business profile, currency symbol, and backup data</p>
+          </div>
+        </div>
+
+        <div class="settings-grid">
+          <!-- General Gym Info Form -->
+          <div class="settings-card">
+            <div class="card-header-flex">
+              <div>
+                <h3 class="card-title">Gym Profile & Receipt Branding</h3>
+                <p class="card-subtitle">Used on printed membership receipts and headers</p>
+              </div>
+            </div>
+            <form id="gymSettingsForm" class="settings-form">
+              <div class="form-row">
+                <div class="form-group flex-1">
+                  <label for="settingGymName">Gym / Facility Name</label>
+                  <input type="text" id="settingGymName" required />
+                </div>
+                <div class="form-group flex-1">
+                  <label for="settingCurrency">Currency Symbol</label>
+                  <select id="settingCurrency" class="form-select">
+                    <option value="$">$ (USD / CAD / AUD)</option>
+                    <option value="₹">₹ (INR - Rupee)</option>
+                    <option value="€">€ (EUR - Euro)</option>
+                    <option value="£">£ (GBP - Pound)</option>
+                    <option value="AED">AED (Dirham)</option>
+                    <option value="¥">¥ (JPY / CNY)</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group flex-1">
+                  <label for="settingPhone">Gym Contact Phone</label>
+                  <input type="text" id="settingPhone" />
+                </div>
+                <div class="form-group flex-1">
+                  <label for="settingEmail">Official Email</label>
+                  <input type="email" id="settingEmail" />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="settingAddress">Gym Physical Address</label>
+                <input type="text" id="settingAddress" />
+              </div>
+
+              <div class="form-group">
+                <label for="settingReceiptFooter">Receipt Terms / Footer Message</label>
+                <textarea id="settingReceiptFooter" rows="2"></textarea>
+              </div>
+
+              <button type="submit" class="btn btn-primary">
+                <i data-lucide="save"></i>
+                <span>Save Settings</span>
+              </button>
+            </form>
+          </div>
+
+          <!-- Data Management & Backup -->
+          <div class="settings-card">
+            <div class="card-header-flex">
+              <div>
+                <h3 class="card-title">Data Storage & Backup</h3>
+                <p class="card-subtitle">All records are stored locally in your browser</p>
+              </div>
+            </div>
+
+            <div class="data-actions-list">
+              <div class="data-action-row">
+                <div>
+                  <strong>Export Full System Backup</strong>
+                  <p class="text-muted">Download all members, plans, and payments as a JSON file</p>
+                </div>
+                <button id="exportJsonBackupBtn" class="btn btn-outline btn-sm">
+                  <i data-lucide="download"></i>
+                  <span>Backup JSON</span>
+                </button>
+              </div>
+
+              <div class="data-action-row">
+                <div>
+                  <strong>Import / Restore Backup</strong>
+                  <p class="text-muted">Restore data from a previously exported JSON backup file</p>
+                </div>
+                <label class="btn btn-outline btn-sm file-upload-label">
+                  <i data-lucide="upload"></i>
+                  <span>Upload JSON</span>
+                  <input type="file" id="importJsonFileInput" accept=".json" class="hidden" />
+                </label>
+              </div>
+
+              <div class="data-action-row">
+                <div>
+                  <strong>Reset to Default Demo Data</strong>
+                  <p class="text-muted">Reload clean sample members, plans, and payments</p>
+                </div>
+                <button id="resetDemoDataBtn" class="btn btn-secondary btn-sm">
+                  <i data-lucide="refresh-cw"></i>
+                  <span>Load Demo Data</span>
+                </button>
+              </div>
+
+              <div class="data-action-row danger-row">
+                <div>
+                  <strong class="text-red">Wipe All Records</strong>
+                  <p class="text-muted">Permanently deletes all members, payments, and custom plans</p>
+                </div>
+                <button id="wipeAllDataBtn" class="btn btn-danger btn-sm">
+                  <i data-lucide="trash-2"></i>
+                  <span>Wipe All Data</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- ==================== MODALS ==================== -->
+
+  <!-- Modal 1: Add / Edit Member Modal -->
+  <div id="memberModal" class="modal-backdrop hidden">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-header">
+        <div>
+          <h3 id="memberModalTitle" class="modal-title">Add New Member</h3>
+          <p class="modal-subtitle">Register a new gym member and assign a subscription</p>
+        </div>
+        <button class="icon-btn modal-close-btn" data-modal="memberModal" aria-label="Close modal">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+
+      <form id="memberForm" class="modal-body">
+        <input type="hidden" id="memberFormMode" value="add" />
+        <input type="hidden" id="memberOriginalId" value="" />
+
+        <div class="form-section-title">Personal Information</div>
+        <div class="form-grid-3">
+          <div class="form-group">
+            <label for="memberIdInput">Member ID <span class="required">*</span></label>
+            <input type="text" id="memberIdInput" required placeholder="e.g. GYM-1001" />
+            <small class="form-hint">Unique identification code</small>
+          </div>
+
+          <div class="form-group span-2">
+            <label for="memberNameInput">Full Name <span class="required">*</span></label>
+            <input type="text" id="memberNameInput" required placeholder="e.g. Marcus Vance" />
+          </div>
+        </div>
+
+        <div class="form-grid-3">
+          <div class="form-group">
+            <label for="memberPhoneInput">Phone Number <span class="required">*</span></label>
+            <input type="tel" id="memberPhoneInput" required placeholder="+1 555-019-2834" />
+          </div>
+
+          <div class="form-group">
+            <label for="memberEmailInput">Email Address</label>
+            <input type="email" id="memberEmailInput" placeholder="marcus@example.com" />
+          </div>
+
+          <div class="form-group">
+            <label for="memberGenderInput">Gender</label>
+            <select id="memberGenderInput" class="form-select">
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-grid-3">
+          <div class="form-group">
+            <label for="memberAgeInput">Age</label>
+            <input type="number" id="memberAgeInput" min="12" max="100" placeholder="28" />
+          </div>
+
+          <div class="form-group span-2">
+            <label for="memberAddressInput">Address</label>
+            <input type="text" id="memberAddressInput" placeholder="124 Fitness Blvd, Suite 4A" />
+          </div>
+        </div>
+
+        <div class="form-section-title">Membership & Subscription</div>
+        <div class="form-grid-3">
+          <div class="form-group">
+            <label for="memberPlanInput">Membership Plan <span class="required">*</span></label>
+            <select id="memberPlanInput" class="form-select" required>
+              <!-- Dynamically populated -->
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="memberStartDateInput">Start Date <span class="required">*</span></label>
+            <input type="date" id="memberStartDateInput" required />
+          </div>
+
+          <div class="form-group">
+            <label for="memberExpiryDateInput">Expiry Date <span class="required">*</span></label>
+            <input type="date" id="memberExpiryDateInput" required />
+            <small class="form-hint">Calculated automatically</small>
+          </div>
+        </div>
+
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label for="memberStatusInput">Membership Status</label>
+            <select id="memberStatusInput" class="form-select">
+              <option value="Active">Active</option>
+              <option value="Inactive">Inactive</option>
+            </select>
+          </div>
+
+          <div class="form-group" id="autoPaymentCheckboxWrapper">
+            <label class="checkbox-container">
+              <input type="checkbox" id="recordInitialPaymentCheck" checked />
+              <span class="checkmark"></span>
+              <span>Automatically record initial payment for this plan</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary modal-close-btn" data-modal="memberModal">Cancel</button>
+          <button type="submit" class="btn btn-primary">
+            <i data-lucide="check"></i>
+            <span id="memberFormSubmitText">Save Member</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal 2: View Member Details & ID Card Modal -->
+  <div id="viewMemberModal" class="modal-backdrop hidden">
+    <div class="modal-dialog modal-md">
+      <div class="modal-header">
+        <div>
+          <h3 class="modal-title">Member Profile & Card</h3>
+          <p class="modal-subtitle">Complete profile overview and membership pass</p>
+        </div>
+        <button class="icon-btn modal-close-btn" data-modal="viewMemberModal" aria-label="Close modal">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <!-- Digital Gym Card -->
+        <div class="gym-id-card" id="printableMemberCard">
+          <div class="id-card-top">
+            <div class="id-card-brand">
+              <i data-lucide="dumbbell"></i>
+              <span>Apex<span class="accent-text">Fit</span></span>
+            </div>
+            <div class="id-card-status" id="viewCardStatusBadge">ACTIVE</div>
+          </div>
+
+          <div class="id-card-body">
+            <div class="id-avatar-circle" id="viewCardAvatar">JD</div>
+            <div class="id-member-info">
+              <h3 id="viewCardName">John Doe</h3>
+              <span class="id-badge-code" id="viewCardId">#GYM-1001</span>
+              <div class="id-plan-tag" id="viewCardPlan">Yearly Pro VIP</div>
+            </div>
+          </div>
+
+          <div class="id-card-footer">
+            <div>
+              <span class="id-meta-lbl">VALID FROM</span>
+              <span class="id-meta-val" id="viewCardStart">2026-01-01</span>
+            </div>
+            <div>
+              <span class="id-meta-lbl">EXPIRES</span>
+              <span class="id-meta-val text-accent" id="viewCardExpiry">2027-01-01</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Full Info List -->
+        <div class="member-info-grid">
+          <div class="info-item">
+            <span class="info-label">Phone</span>
+            <span class="info-value" id="viewMemberPhone">-</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">Email</span>
+            <span class="info-value" id="viewMemberEmail">-</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">Gender / Age</span>
+            <span class="info-value" id="viewMemberGenderAge">-</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">Registration Date</span>
+            <span class="info-value" id="viewMemberJoined">-</span>
+          </div>
+          <div class="info-item span-2">
+            <span class="info-label">Address</span>
+            <span class="info-value" id="viewMemberAddress">-</span>
+          </div>
+        </div>
+
+        <!-- Member's Payment History in Profile -->
+        <div class="member-payments-section">
+          <div class="section-sub-header">
+            <h4>Payment Records for this Member</h4>
+          </div>
+          <div class="table-responsive">
+            <table class="data-table compact-table">
+              <thead>
+                <tr>
+                  <th>Receipt</th>
+                  <th>Amount</th>
+                  <th>Date</th>
+                  <th>Method</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="viewMemberPaymentsBody">
+                <!-- Injected via JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button id="printMemberCardBtn" class="btn btn-secondary">
+          <i data-lucide="printer"></i>
+          <span>Print Pass Card</span>
+        </button>
+        <button id="viewMemberEditBtn" class="btn btn-primary">
+          <i data-lucide="edit"></i>
+          <span>Edit Details</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 3: Add / Edit Membership Plan Modal -->
+  <div id="planModal" class="modal-backdrop hidden">
+    <div class="modal-dialog modal-md">
+      <div class="modal-header">
+        <div>
+          <h3 id="planModalTitle" class="modal-title">Create Membership Plan</h3>
+          <p class="modal-subtitle">Define pricing, duration, and member privileges</p>
+        </div>
+        <button class="icon-btn modal-close-btn" data-modal="planModal" aria-label="Close modal">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+
+      <form id="planForm" class="modal-body">
+        <input type="hidden" id="planFormMode" value="add" />
+        <input type="hidden" id="planOriginalId" value="" />
+
+        <div class="form-group">
+          <label for="planNameInput">Plan Name <span class="required">*</span></label>
+          <input type="text" id="planNameInput" required placeholder="e.g. Monthly Fitness Standard" />
+        </div>
+
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label for="planPriceInput">Price ($) <span class="required">*</span></label>
+            <input type="number" id="planPriceInput" required min="1" step="0.01" placeholder="49.99" />
+          </div>
+
+          <div class="form-group">
+            <label for="planDurationMonthsInput">Duration (Months) <span class="required">*</span></label>
+            <select id="planDurationMonthsInput" class="form-select" required>
+              <option value="1">1 Month (Monthly)</option>
+              <option value="3">3 Months (Quarterly)</option>
+              <option value="6">6 Months (Half-Yearly)</option>
+              <option value="12">12 Months (Yearly)</option>
+              <option value="24">24 Months (2-Year)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="planDescriptionInput">Description</label>
+          <textarea id="planDescriptionInput" rows="2" placeholder="Full gym access, locker rooms, orientation session"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="planFeaturesInput">Features (One per line)</label>
+          <textarea id="planFeaturesInput" rows="3" placeholder="Full Gym Equipment Access&#10;Locker Room & Shower&#10;Free Fitness Assessment"></textarea>
+          <small class="form-hint">Enter each benefit on a new line</small>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary modal-close-btn" data-modal="planModal">Cancel</button>
+          <button type="submit" class="btn btn-primary">
+            <i data-lucide="check"></i>
+            <span id="planFormSubmitText">Save Plan</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal 4: Record / Edit Payment Modal -->
+  <div id="paymentModal" class="modal-backdrop hidden">
+    <div class="modal-dialog modal-md">
+      <div class="modal-header">
+        <div>
+          <h3 id="paymentModalTitle" class="modal-title">Record Payment</h3>
+          <p class="modal-subtitle">Log transaction details and update billing balance</p>
+        </div>
+        <button class="icon-btn modal-close-btn" data-modal="paymentModal" aria-label="Close modal">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+
+      <form id="paymentForm" class="modal-body">
+        <input type="hidden" id="paymentFormMode" value="add" />
+        <input type="hidden" id="paymentOriginalId" value="" />
+
+        <div class="form-group">
+          <label for="paymentMemberSelect">Member <span class="required">*</span></label>
+          <select id="paymentMemberSelect" class="form-select" required>
+            <!-- Injected via JS -->
+          </select>
+        </div>
+
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label for="paymentPlanInput">Plan / Description</label>
+            <input type="text" id="paymentPlanInput" required placeholder="Monthly Fitness" />
+          </div>
+
+          <div class="form-group">
+            <label for="paymentAmountInput">Amount <span class="required">*</span></label>
+            <input type="number" id="paymentAmountInput" required min="0" step="0.01" placeholder="49.99" />
+          </div>
+        </div>
+
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label for="paymentDateInput">Payment Date <span class="required">*</span></label>
+            <input type="date" id="paymentDateInput" required />
+          </div>
+
+          <div class="form-group">
+            <label for="paymentMethodSelect">Payment Method <span class="required">*</span></label>
+            <select id="paymentMethodSelect" class="form-select" required>
+              <option value="Cash">Cash</option>
+              <option value="UPI">UPI / QR Code</option>
+              <option value="Card">Debit / Credit Card</option>
+              <option value="Bank Transfer">Bank Transfer / NetBanking</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label for="paymentStatusSelect">Payment Status <span class="required">*</span></label>
+            <select id="paymentStatusSelect" class="form-select" required>
+              <option value="Paid">Paid</option>
+              <option value="Pending">Pending</option>
+              <option value="Overdue">Overdue</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="paymentReferenceInput">Transaction / Reference #</label>
+            <input type="text" id="paymentReferenceInput" placeholder="TXN-984028 or Cash" />
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary modal-close-btn" data-modal="paymentModal">Cancel</button>
+          <button type="submit" class="btn btn-primary">
+            <i data-lucide="check"></i>
+            <span id="paymentFormSubmitText">Save Payment</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal 5: Printable Payment Receipt Modal -->
+  <div id="receiptModal" class="modal-backdrop hidden">
+    <div class="modal-dialog modal-md">
+      <div class="modal-header">
+        <div>
+          <h3 class="modal-title">Payment Receipt</h3>
+          <p class="modal-subtitle">Official printable tax invoice & payment receipt</p>
+        </div>
+        <button class="icon-btn modal-close-btn" data-modal="receiptModal" aria-label="Close modal">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <!-- Printable Invoice Container -->
+        <div id="printableReceipt" class="receipt-paper">
+          <div class="receipt-header">
+            <div class="receipt-brand">
+              <div class="receipt-logo">
+                <i data-lucide="dumbbell"></i>
+              </div>
+              <div>
+                <h2 id="receiptGymName">ApexFit Gym & Fitness Club</h2>
+                <p id="receiptGymAddress" class="text-sm">124 Fitness Blvd, Suite 4A, Metro City</p>
+                <p id="receiptGymContact" class="text-xs">Tel: +1 (555) 019-8234 | info@apexfitgym.com</p>
+              </div>
+            </div>
+            <div class="receipt-meta">
+              <span class="receipt-badge" id="receiptStatusBadge">PAID</span>
+              <p><strong>Receipt #:</strong> <span id="receiptId">PAY-1001</span></p>
+              <p><strong>Date:</strong> <span id="receiptDate">2026-10-14</span></p>
+            </div>
+          </div>
+
+          <div class="receipt-divider"></div>
+
+          <div class="receipt-bill-to">
+            <div class="bill-col">
+              <span class="receipt-lbl">BILLED TO:</span>
+              <h4 id="receiptMemberName">Marcus Vance</h4>
+              <p id="receiptMemberId">Member ID: GYM-1001</p>
+              <p id="receiptMemberPhone">Phone: +1 555-019-2834</p>
+            </div>
+            <div class="bill-col">
+              <span class="receipt-lbl">PAYMENT METHOD:</span>
+              <h4 id="receiptMethod">Card</h4>
+              <p id="receiptRef">Ref: TXN-49102</p>
+            </div>
+          </div>
+
+          <table class="receipt-table">
+            <thead>
+              <tr>
+                <th>Description</th>
+                <th>Period</th>
+                <th class="text-right">Amount</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <strong id="receiptPlanTitle">Quarterly Strength Plan</strong>
+                  <div class="text-xs text-muted" id="receiptPlanDesc">Full facility membership with locker access</div>
+                </td>
+                <td id="receiptPeriod">3 Months</td>
+                <td class="text-right" id="receiptItemAmount">$129.99</td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr>
+                <td colspan="2" class="text-right"><strong>Subtotal:</strong></td>
+                <td class="text-right" id="receiptSubtotal">$129.99</td>
+              </tr>
+              <tr>
+                <td colspan="2" class="text-right"><strong>Tax / GST (0%):</strong></td>
+                <td class="text-right">$0.00</td>
+              </tr>
+              <tr class="total-row">
+                <td colspan="2" class="text-right"><strong>Total Amount:</strong></td>
+                <td class="text-right"><strong id="receiptTotalAmount">$129.99</strong></td>
+              </tr>
+            </tfoot>
+          </table>
+
+          <div class="receipt-footer">
+            <div class="receipt-terms">
+              <p id="receiptFooterTerms">Thank you for working out with us! Memberships are non-transferable. Please carry your digital member pass at check-in.</p>
+            </div>
+            <div class="receipt-signature">
+              <div class="signature-line"></div>
+              <span>Authorized Signature</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary modal-close-btn" data-modal="receiptModal">Close</button>
+        <button id="printReceiptBtn" class="btn btn-primary">
+          <i data-lucide="printer"></i>
+          <span>Print Receipt / PDF</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 6: Client Online Join Modal -->
+  <div id="clientJoinModal" class="modal-backdrop hidden">
+    <div class="modal-dialog modal-md">
+      <div class="modal-header">
+        <div>
+          <h3 class="modal-title">Join ApexFit Online</h3>
+          <p class="modal-subtitle">Instant registration and digital pass activation</p>
+        </div>
+        <button class="icon-btn modal-close-btn" data-modal="clientJoinModal" aria-label="Close modal">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+
+      <form id="clientJoinForm" class="modal-body">
+        <div class="selected-plan-banner">
+          <div>
+            <span class="text-xs text-muted">SELECTED MEMBERSHIP</span>
+            <h4 id="joinModalPlanName" class="accent-text">Quarterly Strength Plan</h4>
+          </div>
+          <div class="text-right">
+            <span class="text-xs text-muted">SUBSCRIPTION DUES</span>
+            <h3 id="joinModalPlanPrice">$129.99</h3>
+          </div>
+        </div>
+
+        <input type="hidden" id="joinPlanIdHidden" value="" />
+
+        <div class="form-grid-2">
+          <div class="form-group span-2">
+            <label for="joinFullName">Your Full Name <span class="required">*</span></label>
+            <input type="text" id="joinFullName" required placeholder="Marcus Vance" />
+          </div>
+
+          <div class="form-group">
+            <label for="joinPhone">Phone Number <span class="required">*</span></label>
+            <input type="tel" id="joinPhone" required placeholder="+1 555-019-2834" />
+          </div>
+
+          <div class="form-group">
+            <label for="joinEmail">Email Address <span class="required">*</span></label>
+            <input type="email" id="joinEmail" required placeholder="marcus@example.com" />
+          </div>
+
+          <div class="form-group">
+            <label for="joinGender">Gender</label>
+            <select id="joinGender" class="form-select">
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="joinAge">Age</label>
+            <input type="number" id="joinAge" min="14" max="95" placeholder="28" />
+          </div>
+
+          <div class="form-group span-2">
+            <label for="joinPaymentMethod">Payment Option <span class="required">*</span></label>
+            <select id="joinPaymentMethod" class="form-select" required>
+              <option value="Card">Credit / Debit Card (Online Instant)</option>
+              <option value="UPI">UPI / Instant QR Pay</option>
+              <option value="Cash">Pay at Front Desk / Cash</option>
+              <option value="Bank Transfer">Direct Bank Transfer</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary modal-close-btn" data-modal="clientJoinModal">Cancel</button>
+          <button type="submit" class="btn btn-primary">
+            <i data-lucide="check-circle-2"></i>
+            <span>Complete Registration & Activate</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal 7: Free Trial Day Pass Modal -->
+  <div id="trialModal" class="modal-backdrop hidden">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-header">
+        <div>
+          <h3 class="modal-title">Claim Free 1-Day Pass</h3>
+          <p class="modal-subtitle">Experience our full facility with zero commitment</p>
+        </div>
+        <button class="icon-btn modal-close-btn" data-modal="trialModal" aria-label="Close modal">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+
+      <form id="trialForm" class="modal-body">
+        <div class="form-group">
+          <label for="trialName">Full Name <span class="required">*</span></label>
+          <input type="text" id="trialName" required placeholder="Jordan Smith" />
+        </div>
+        <div class="form-group">
+          <label for="trialPhone">Phone Number <span class="required">*</span></label>
+          <input type="tel" id="trialPhone" required placeholder="+1 555-019-8833" />
+        </div>
+        <div class="form-group">
+          <label for="trialDate">Preferred Visit Date <span class="required">*</span></label>
+          <input type="date" id="trialDate" required />
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary modal-close-btn" data-modal="trialModal">Cancel</button>
+          <button type="submit" class="btn btn-primary">
+            <i data-lucide="ticket"></i>
+            <span>Generate Free Pass</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal 8: Confirmation Dialog -->
+  <div id="confirmModal" class="modal-backdrop hidden">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-header">
+        <div class="modal-title-with-icon">
+          <div class="confirm-icon-box" id="confirmIconBox">
+            <i data-lucide="alert-triangle"></i>
+          </div>
+          <div>
+            <h3 id="confirmModalTitle" class="modal-title">Confirm Action</h3>
+          </div>
+        </div>
+        <button class="icon-btn modal-close-btn" data-modal="confirmModal" aria-label="Close modal">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <p id="confirmModalMessage" class="confirm-message">Are you sure you want to proceed with this action?</p>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary modal-close-btn" data-modal="confirmModal">Cancel</button>
+        <button type="button" id="confirmModalActionBtn" class="btn btn-danger">Confirm</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="toastContainer" class="toast-container" aria-live="polite"></div>
+
+  <!-- Application Script -->
+  <script src="./script.js"></script>
+</body>
+</html>
